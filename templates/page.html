@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel = "icon" href =  "https://firebasestorage.googleapis.com/v0/b/optician-sitva-gcp.appspot.com/o/app_logo%2Fos_mainlogo.svg?alt=media&token=6b36a7b2-1764-4d4f-a141-b5f87d5f1915" type = "image/svg+xml" sizes="any"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+
+</head>
+<body>
+    
+    <div class="container">
+        <br>
+        <h1 style="text-align: center;"><img src="https://firebasestorage.googleapis.com/v0/b/optician-sitva-gcp.appspot.com/o/app_logo%2Fos_mainlogo.svg?alt=media&token=6b36a7b2-1764-4d4f-a141-b5f87d5f1915" alt="ID Proof!" width="60" height="60" /> Optician Sitva Admin Page</h1>
+    <br><br>
+
+    <h4>Doctor Details</h4>
+    <br><hr>
+        {% for l in t %}
+        {% if l['status'] == '0' %}
+        
+        <p>Doctor Name: <b>{{ l['name'] }}</b> <br>
+        Doctor Email: <b>{{ l['email'] }}</b><br>
+        Approval Status: <span style="color:red;">Not approved</span><br>
+        Image Proof:</p>
+        <img src="{{l['id_proof_url_1']}}" alt="ID Proof!" width="250" height="300" />
+
+        <br><br>
+
+        <a class="btn btn-success" href="http://0.0.0.0:8080/update/doctor_id={{l['doctor_id']}}/a">Approve</a>
+            <a class="btn btn-danger" href="http://0.0.0.0:8080/delete/doctor_id={{l['doctor_id']}}" onclick="return confirm('Are you sure you want to delete the user?')">Delete</a>
+        
+            <br><hr><br>
+
+        {% else %}
+
+        <p>Doctor Name: <b>{{ l['name'] }}</b> <br>
+            Doctor Email: <b>{{ l['email'] }}</b><br>
+            Approval Status: <span style="color:green;">Approved</span></p>
+
+            <a class="btn btn-warning" href="http://0.0.0.0:8080/update/doctor_id={{l['doctor_id']}}/d">Disapprove</a>
+            <a class="btn btn-danger" href="http://0.0.0.0:8080/delete/doctor_id={{l['doctor_id']}}" onclick="return confirm('Are you sure you want to delete the user?')">Delete</a>
+            
+            <br><hr><br>
+
+    
+
+        {% endif %}
+			
+		{% endfor %}
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    {% if user %}
+
+
+        <p>Username: <b>{{ user['name'] }}</b> <br>
+        User Email: <b>{{ user['email'] }}</b><br>
+        <p>Address: <b>{{ user['address_google_map'] }}</b><br> </p>
+
+
+    {% endif %}
+
+
+<p>Appointment :</p>
+
+                    {% if us %}
+                    {% for q in us %}
+
+                    <a href="" id="{{q}}" class="appointments" onclick="hello('{{q}}','{{uid}}')">{{q}}</a>
+
+                    <br><br>
+
+{% endfor %}
+
+{% else %}
+<p>No appointments to show</p>
+{% endif %}
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" >
+
+
+
+    function hello(epoch,uid){
+        console.log(epoch);
+        console.log(uid);
+        // alert("hello");
+
+        var epoch_data = epoch;
+        var uid_data = uid;
+
+        alert(`Uid: ${epoch_data} Epoch:${uid_data}`);
+
+        $.ajax({
+
+            url:'http://0.0.0.0:8080/appointments',
+            type:'POST',
+            data:{
+                'uid':uid_data,
+                'epoch':epoch_data
+
+            },
+            success: function(response)
+            {
+                console.log(response);
+
+            },
+            error: function(error)
+            {
+
+                console.log(error);
+
+            }
+
+        });
+
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/appointments",
+        //     uid_data: uid,
+        // success: function(msg){
+        //    alert( "Data Saved: " + msg );
+        //        // some suff there
+        // }
+    // })
+
+        // $.post( "/appointments", {
+        //     uid_data: uid,
+        //     epoch_data: epoch
+        //                         });
+    }
+
+// $(function(){
+//         $('.appointments').bind('click', function(){
+
+//             console.log("here xxxxxxxxxxxxxxxxxxx");
+//             alert("hello");
+
+//             // $.post( "/appointments", {
+//             //             uid_data: this.id 
+//             //         });
+            
+//         });
+//     });
+
+
+
+
+</script>
+
+
+
+    
+</body>
+</html>
+ -->
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User</title>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='dashboard.css') }}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+     <link rel = "icon" href =  "https://firebasestorage.googleapis.com/v0/b/optician-sitva-gcp.appspot.com/o/app_logo%2Ffavicon.ico?alt=media&token=c3af0337-ffc0-488d-9fa7-77af20606e4c" type = "image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+<body onload="noBack();" oncontextmenu="return false;" onpageshow="if (event.persisted) noBack();" onunload="">
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+<div class="wrapper">
+    <div class="sidebar">
+        <h1 style="text-align: center;"><img src="https://firebasestorage.googleapis.com/v0/b/optician-sitva-gcp.appspot.com/o/app_logo%2Fos_mainlogo.svg?alt=media&token=6b36a7b2-1764-4d4f-a141-b5f87d5f1915" alt="ID Proof!" width="60" height="60" /> </h1>
+
+        <h2>Optician Sitva</h2>
+        <ul>
+            <li style="background-color: #fff"><a href="\user" style="color: #007AFE"><i class="fas fa-user" style="color: #007AFE" ></i >User</a></li>
+            <li><a href="\doctor"><i class="fas fa-user-md"></i>Doctor</a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i>Customer Support</a></li>
+            <li><a href="#"><i class="fas fa-store-alt"></i>Shop</a></li>
+            <li><a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+
+        </ul>
+
+
+</div>
+</div>
+
+<div class="container-fluid pt-3">
+    <div class="row pt-5">
+        <div class="offset-md-4 col-md-5">
+            <form action="/editUser/uid={{uid}}" method="post">
+
+
+
+            {% if user %}
+
+        <img src="{{user['profile_pic']}}" alt="Profile" width="100" height="100" /><br><br>
+
+
+  <label for="uname">User name:</label>
+  <input type="text" id="uname" name="uname" value="{{ user['name'] }} "disabled><br><br>
+
+  <label for="email">Email:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+  <input  type="text" id="email" name="email"  value="{{ user['email'] }}" disabled><br><br>
+
+    <label for="addr">Address:</label>&nbsp;&nbsp;&nbsp;
+    <input type="text"  id="addr" name="addr" value="{{user['address_google_map']}}" disabled/>
+
+                {% endif %}
+
+
+<p>Appointment :</p>
+
+                    {% if us %}
+                    {% for q in us %}
+
+                    <a href="" id="{{q}}" class="appointments" onclick="hello('{{q}}','{{uid}}')">{{q}}</a>
+
+                    <br><br>
+
+{% endfor %}
+
+{% else %}
+<p>No appointments to show</p>
+{% endif %}
+                <input type="submit" style="display:inline;position:absolute;left:100px;" id="save" class="btn  btn-primary float-right"  value="Save" />
+
+ </form>
+             <input type="button" style="display:inline" id="edit" class="btn  btn-primary float-right" onclick="edit()" value="Edit" />
+
+    </div>
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<script language="JavaScript">
+function edit() {
+
+
+
+  var t = document.getElementById("edit");
+  if(t.value == "Edit") {
+
+// <!--  t.value = "Save";-->
+  document.getElementById("uname").disabled = false;
+   document.getElementById("email").disabled = false;
+    document.getElementById("addr").disabled = false;
+  }
+  else{
+  t.value = "Edit";
+  document.getElementById("uname").disabled = true;
+   document.getElementById("email").disabled = true;
+    document.getElementById("addr").disabled = true;
+}
+
+
+}
+
+</script>
+<!--<script>-->
+<!--      $(document).ready(function() {-->
+<!--         function disablePrev() { window.history.forward() }-->
+<!--         window.onload = disablePrev();-->
+<!--         window.onpageshow = function(evt) { if (evt.persisted) disableBack() }-->
+<!--      });-->
+<!--   </script>-->
+<script type="text/javascript">
+	window.history.forward();
+	function noBack() { window.history.forward(); }
+</script>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" >
+
+
+
+    function hello(epoch,uid){
+        console.log(epoch);
+        console.log(uid);
+        // alert("hello");
+
+        var epoch_data = epoch;
+        var uid_data = uid;
+
+        alert(`Uid: ${epoch_data} Epoch:${uid_data}`);
+
+        $.ajax({
+
+            url:'http://0.0.0.0:8080/appointments',
+            type:'POST',
+            data:{
+                'uid':uid_data,
+                'epoch':epoch_data
+
+            },
+            success: function(response)
+            {
+                console.log(response);
+
+            },
+            error: function(error)
+            {
+
+                console.log(error);
+
+            }
+
+        });
+
+
+    }
+
+</script>
+
+
+</body>
+</html>
