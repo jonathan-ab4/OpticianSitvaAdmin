@@ -5,10 +5,10 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>User</title>
+    <title>Orders</title>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='dashboard.css') }}">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-     <link rel = "icon" href =  "https://firebasestorage.googleapis.com/v0/b/optician-sitva-gcp.appspot.com/o/app_logo%2Ffavicon.ico?alt=media&token=c3af0337-ffc0-488d-9fa7-77af20606e4c" type = "image/x-icon">
+    <link rel = "icon" href =  "https://firebasestorage.googleapis.com/v0/b/optician-sitva-gcp.appspot.com/o/app_logo%2Fos_mainlogo.svg?alt=media&token=6b36a7b2-1764-4d4f-a141-b5f87d5f1915" type = "image/svg+xml" sizes="any"> 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -23,13 +23,12 @@
 
         <h2>Optician Sitva</h2>
         <ul>
-
-                <li><a href="/user"><i class="fas fa-question-circle"></i>User</a></li>
+            <li ><a href="/user"><i class="fas fa-user"  ></i>User</a></li>
             <li><a href="/doctor"><i class="fas fa-user-md"></i>Doctor</a></li>
-            <li style="background-color: #fff"><a href="/customer" style="color: #007AFE"><i class="fas fa-user" style="color: #007AFE" ></i >Customer Support</a></li>
-       
-            <li><a href="#"><i class="fas fa-store-alt"></i>Shop</a></li>
+            <li style="background-color: #EDF1FA"><a href="/orders" style="color: #007AFE"><i class="fas fa-store-alt" style="color: #007AFE"></i>Orders</a></li>
+            <!-- <li><a href="#"><i class="fas fa-store-alt"></i>Shop</a></li> -->
             <li><a href="/logout"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+
 
         </ul>
 
@@ -37,15 +36,34 @@
 </div>
 </div>
 
+               {% if msg%}
+                    <div class="alert alert-danger">
+                    {{msg}}
+                     </div>
+                {% endif %}
+
 <div class="container-fluid pt-3">
     <div class="row pt-5">
         <div class="offset-md-4 col-md-4">
-            <h3>Customer Support</h3>
-            <h1>{{mail}}</h1>
+             <br>
+                <!-- <img class="mb-4" src="https://firebasestorage.googleapis.com/v0/b/optician-sitva-gcp.appspot.com/o/app_logo%2Flogo.svg?alt=media&token=da4b92ba-eaa9-49db-85dc-9f1bbdaa46a9" alt="" width="100" height="100"> -->
+            <h1 style="text-align: center;"><img src="https://firebasestorage.googleapis.com/v0/b/optician-sitva-gcp.appspot.com/o/app_logo%2Flogo.svg?alt=media&token=da4b92ba-eaa9-49db-85dc-9f1bbdaa46a9" alt="Logo" width="250" height="250" /></h1>
+            <h2 style="text-align: center; color:#104BAB;position:relative;top:-50px;">Search Order</h2>
+            <br>
+    <form action="/orderDetails" method="post">
+        <div class="mb-3">
+
+            <label for="email" class="visually-hidden">Email address</label>
+            <input type="text"   name="email" class="form-control" placeholder="Order ID or Order Email" required autofocus>
+
+        </div>
+
+        <button class="btn btn-primary"  type="submit" style="text-align: center ;position:relative;left:180px;">Search</button>
 
     </div>
 
 </div>
+    </form>
 
 </div>
 

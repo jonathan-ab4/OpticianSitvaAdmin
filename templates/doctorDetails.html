@@ -23,10 +23,9 @@
         <ul>
             <li ><a href="/user"><i class="fas fa-user"  ></i>User</a></li>
             <li style="background-color: #EDF1FA"><a href="/doctor" style="color: #007AFE"><i class="fas fa-user-md" style="color: #007AFE"></i>Doctor</a></li>
-            <!-- <li><a href="/customer"><i class="fas fa-question-circle"></i>Customer Support</a></li> -->
-            <li><a href="/order"><i class="fas fa-store-alt"></i>Orders</a></li>
+            <!-- <li><a href="#"><i class="fas fa-question-circle"></i>Customer Support</a></li> -->
+            <li><a href="/order"><i class="fas fa-store-alt"></i>Orders</a></li>            
             <li><a href="/logout"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
-
 
         </ul>
 
@@ -37,27 +36,64 @@
 <div class="container-fluid pt-3">
     <div class="row pt-5">
         <div class="offset-md-4 col-md-5">
-
-         <br>
-                <!-- <img class="mb-4" src="https://firebasestorage.googleapis.com/v0/b/optician-sitva-gcp.appspot.com/o/app_logo%2Flogo.svg?alt=media&token=da4b92ba-eaa9-49db-85dc-9f1bbdaa46a9" alt="" width="100" height="100"> -->
-            <h1 style="text-align: center;"><img src="https://firebasestorage.googleapis.com/v0/b/optician-sitva-gcp.appspot.com/o/app_logo%2Flogo.svg?alt=media&token=da4b92ba-eaa9-49db-85dc-9f1bbdaa46a9" alt="Logo" width="250" height="250" /></h1>
-            <h2 style="text-align: center; color:#104BAB;position:relative;top:-50px;">Search Doctor</h2>
-            <br>
-    <form action="/doctorDetails" method="post">
-        <div class="mb-3">
-
-            <label for="email" class="visually-hidden">Email address</label>
-            <input type="email"   name="email" class="form-control" placeholder="Email address" required autofocus>
-
-        </div>
-
-        <button class="btn btn-primary"  type="submit" style="text-align: center ;position:relative;left:180px;">Search</button>
-    </form>
-            <h5>Approval request</h5>
-             <a class="btn btn-success" href="/approvedDoctor">Approved</a>
-            <a class="btn btn-danger" href="/pendingDoctor">Pending</a>
+            <form action="/editDoctor/uid={{uid}}" method="post">
 
 
+
+            {% if user %}
+
+        <img src="{{user['profile_pic']}}" alt="Profile" width="100" height="100" /><br><br>
+
+
+  <label for="uname">Doctor name:</label>
+  <input type="text" id="uname" name="uname" value="{{ user['name'] }} "disabled><br><br>
+
+  <label for="email">Email:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+  <input  type="text" id="email" name="email"  value="{{ user['email'] }}" disabled><br><br>
+
+    <label for="addr">Address:</label>&nbsp;&nbsp;&nbsp;
+    <input type="text"  id="addr" name="addr" value="{{user['address_google_map']}}" disabled/>
+
+                {% endif %}
+
+
+
+<p><b>Appointments :</b></p>
+                <p>Upcoming Appointments :</p>
+         {% if up %}
+
+
+                {% for q in up %}
+
+                <a  href="/appointDetails/user={{uid}}/epoch={{q}}">{{q}}</a>
+
+                             <br><br>
+                {% endfor %}
+            {% else %}
+                <p><b>No Upcoming appointments </b></p>
+                {% endif %}
+
+<p>Past Appointments :</p>
+
+
+                {% if past %}
+
+
+                {% for q in past %}
+
+                <a  href="/appointDetails/user={{uid}}/epoch={{q}}">{{q}}</a>
+
+                             <br><br>
+                {% endfor %}
+            {% else %}
+                <p>No Past appointments </p>
+                {% endif %}
+                <input type="submit" style="display:inline;position:absolute;left:100px;" id="save" class="btn  btn-primary float-right"  value="Save" />
+
+ </form>
+             <input type="button" style="display:inline" id="edit" class="btn  btn-primary float-right" onclick="edit()" value="Edit" />
+
+    </div>
 
 </div>
 
@@ -80,20 +116,10 @@ function convert(){
 function edit() {
 
 
-
-  var t = document.getElementById("edit");
-  if(t.value == "Edit") {
-// <!--  t.value = "Save";-->
   document.getElementById("uname").disabled = false;
-   document.getElementById("email").disabled = false;
     document.getElementById("addr").disabled = false;
-  }
-  else{
-  t.value = "Edit";
-  document.getElementById("uname").disabled = true;
-   document.getElementById("email").disabled = true;
-    document.getElementById("addr").disabled = true;
+
 }
-}
+
 </script>
 </body>
