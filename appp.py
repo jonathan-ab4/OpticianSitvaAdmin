@@ -53,7 +53,7 @@ def update(id,u):
             todo_ref.document(id).update({
             'status': '0'})
 
-        return redirect(url_for('read'))
+        return redirect(url_for('doctor'))
 
     except Exception as e:
         return f"An Error Occured: {e}"
@@ -66,7 +66,7 @@ def delete(id):
         
         todo_ref.document(id).delete()
 
-        return redirect(url_for('read'))
+        return redirect(url_for('doctor'))
 
     except Exception as e:
         return f"An Error Occured: {e}"
@@ -184,57 +184,16 @@ def appointment():
 def editUser(uid):
     try:
         # if request.method == 'POST':
-        mail = request.form['email']
         addr = request.form['addr']
         name = request.form['uname']
         db.collection(u'user').document(uid).update({'name': name, 'address_google_map': addr})
 
-        doc = {}
-
-        doc_t = []
-
-        res2 = []
-
-        appoint1 = ()
-
-        docs = db.collection(u'user').where(u'email', u'==', mail).stream()
-
-        for doc in docs:
-            userList = doc.to_dict()
-            doc_id = doc.id
-
-        appoint = db.collection(u'appointment').where(u'user_id', u'==', doc_id).stream()
-
-        if not doc:
-
-            return "nothing"
-
-        else:
-
-            for doc in appoint:
-                # print(f'{doc.id} => {doc.to_dict()}')
-                appointment = doc.to_dict()
-                doc_t.append(appointment)
-
-            res = [sub['epoch'] for sub in doc_t]
-
-            for res1 in res:
-                stored_time = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime(res1 / 1000))
-                res2.append(stored_time)
-
-            print(res2)
-
-            if (not doc_t):
-                return "Nothing2.0"
-
-            else:
-                # return render_template("userDetails.html", us=res2, uid=doc_id, user=userList)
-                return render_template('user.html')
+        # return render_template("userDetails.html", us=res2, uid=doc_id, user=userList)
+        return render_template('user.html')
 
     except Exception as e:
         return f"An Error Occurred: {e}"
-
-
+        
 
 @app.route('/customer', methods=['GET'])
 def customer():
@@ -243,7 +202,11 @@ def customer():
 
 @app.route('/doctor', methods=['GET'])
 def doctor():
-    return render_template('doctor.html')
+    if is_logged_in == True:
+        return render_template('doctor.html')
+    else:
+        return redirect(url_for('signin'))
+    
 
 
 @app.route('/user', methods=['GET'])
@@ -465,44 +428,50 @@ def view_app(uid,epoch):
 
 @app.route('/doctorDetails', methods=['GET', 'POST'])
 def dotor():
+
+    m = "User not found"
     global doc_id
     if request.method == 'POST':
+
         email = request.form['email']
 
-    doc = {}
+        doc = {}
 
-    doc_u = []
-    doc_p = []
-    total = []
+        doc_u = []
+        doc_p = []
+        total = []
 
-    res2 = []
-    res_up = []
-    res_pa = []
+        appointment = {}
 
-    appoint1 = ()
+        res2 = []
+        res_up = []
+        res_pa = []
 
-    docs = db.collection(u'doctor').where(u'email', u'==', email).stream()
+        appoint1 = ()
 
-    for doc in docs:
-        userList = doc.to_dict()
-        doc_id = doc.id
+        docs = db.collection(u'doctor').where(u'email', u'==', email).stream()
 
-    appoint_up = db.collection(u'appointment').where(u'doctor_id', u'==', doc_id).where(u'test_status', u'==',
+        for doc in docs:
+            userList = doc.to_dict()
+            doc_id = doc.id
+
+        appoint_up = db.collection(u'appointment').where(u'doctor_id', u'==', doc_id).where(u'test_status', u'==',
                                                                                         '0').stream()
-    appoint_pa = db.collection(u'appointment').where(u'doctor_id', u'==', doc_id).where(u'test_status', u'==',
+        appoint_pa = db.collection(u'appointment').where(u'doctor_id', u'==', doc_id).where(u'test_status', u'==',
                                                                                         '1').stream()
 
-    if not doc:
+        if not doc:
 
-        return "nothing"
+            return render_template("doctor.html",msg=m)
 
-    else:
-        for doc in appoint_up:
-            appointment = doc.to_dict()
-            doc_u.append(appointment)
-        for doc in appoint_pa:
-            appointment = doc.to_dict()
-            doc_p.append(appointment)
+        else:
+
+            for doc in appoint_up:
+                appointment = doc.to_dict()
+                doc_u.append(appointment)
+            for doc in appoint_pa:
+                appointment = doc.to_dict()
+                doc_p.append(appointment)
         # ress = [sub['test_status'] for sub in total]
         # for r in ress:
         #     if r == '1':
@@ -521,29 +490,32 @@ def dotor():
         #     #     appointment = doc.to_dict()
         #     #     doc_p.append(appointment)
 
-        res_u = [sub['epoch'] for sub in doc_u]
-        res_p = [sub['epoch'] for sub in doc_p]
+            res_u = [sub['epoch'] for sub in doc_u]
+            res_p = [sub['epoch'] for sub in doc_p]
 
-        for res1 in res_u:
-            stored_time = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime(res1 / 1000))
-            res_up.append(stored_time)
+            for res1 in res_u:
+                stored_time = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime(res1 / 1000))
+                res_up.append(stored_time)
 
-        for res1 in res_p:
-            stored_time = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime(res1 / 1000))
-            res_pa.append(stored_time)
+            for res1 in res_p:
+                stored_time = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime(res1 / 1000))
+                res_pa.append(stored_time)
 
-        if not appointment:
-            return "Nothing2.0"
+            if not appointment:
+                return render_template("doctorDetails.html",user=userList)
 
-        else:
+            else:
             # print("total",total)
 
-            return render_template("doctorDetails.html", tot=total, up=res_up, past=res_pa, time=res2, uid=doc_id,
+                return render_template("doctorDetails.html", tot=total, up=res_up, past=res_pa, time=res2, uid=doc_id,
                                    user=userList)
 
 @app.route('/order', methods=['GET'])
 def order():
-    return render_template('order.html')
+    if is_logged_in == True:
+        return render_template('order.html')
+    else:
+        return redirect(url_for('signin'))
 
 @app.route('/orderDetails/oid=<oid>')
 def orderList(oid):

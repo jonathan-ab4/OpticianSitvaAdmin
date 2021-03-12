@@ -49,12 +49,15 @@
   <input type="text" id="uname" name="uname" value="{{ user['name'] }} "disabled><br><br>
 
   <label for="email">Email:</label>&nbsp;&nbsp;&nbsp;&nbsp;
-  <input  type="text" id="email" name="email"  value="{{ user['email'] }}" disabled><br><br>
+  <input  type="text" id="email" name="email"  size="50" value="{{ user['email'] }}" disabled><br><br>
 
     <label for="addr">Address:</label>&nbsp;&nbsp;&nbsp;
-    <input type="text"  id="addr" name="addr" value="{{user['address_google_map']}}" disabled/>
+    <input type="text"  id="addr" name="addr" size="100" value="{{user['address_google_map']}}" disabled/>
 
                 {% endif %}
+
+
+                <br><br>
 
 
 
@@ -72,6 +75,8 @@
             {% else %}
                 <p><b>No Upcoming appointments </b></p>
                 {% endif %}
+
+                <br>
 
 <p>Past Appointments :</p>
 

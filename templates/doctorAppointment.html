@@ -63,7 +63,7 @@
 
             <h3>Appointment Result</h3>
             <label for="not">Note from Doctor : </label>
-            <input type="text" id="not" name="not" value="{{ data['note_from_doctor'] }}" disabled><br><br>
+            <input type="text" id="not" name="not" size="80" value="{{ data['note_from_doctor'] }}" disabled><br><br>
             <label>Test Report</label><br>
             <img src="{{ data['test_report_img']}}" alt="Invoice!" width="250" height="300" /><br><br>
 
@@ -71,11 +71,13 @@
             <label>Session Recording</label><br>
             <iframe width="560" height="315" src="https://firebasestorage.googleapis.com/v0/b/optician-sitva-gcp.appspot.com/o/doctor_recordings%2F7bMqysJ%20-%20Imgur.mp4?alt=media&token=8670d373-6976-4585-8c74-fe8526bc1e32" frameborder="0" allowfullscreen></iframe>
       </iframe>
-    <input type="submit" style="" id="save" class="btn  btn-primary float-right"  value="Save" />
+    <input type="submit" style="display:inline;position:absolute;left:100px;bottom:21px" id="save" class="btn  btn-primary float-right"  value="Save" />
 
  </form>
-             <input type="button" style="display:inline;left:100px;" id="edit" class="btn  btn-primary float-right" onclick="edit()" value="Edit" />
+ <br><br>
+             <input type="button" style="display:inline;" id="edit" class="btn  btn-primary float-right" onclick="edit()" value="Edit" />
 
+             <br><br>
         </div>
 
 </div>
