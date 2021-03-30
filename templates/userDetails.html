@@ -27,7 +27,7 @@
             <li><a href="/doctor"><i class="fas fa-user-md"></i>Doctor</a></li>
             <!-- <li><a href="#"><i class="fas fa-question-circle"></i>Customer Support</a></li> -->
             <li><a href="/order"><i class="fas fa-store-alt"></i>Orders</a></li>
-            <li><a href="/logout"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+            <li><a href="/logout" onclick="return confirm('Log out?')"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
 
         </ul>
 
@@ -76,7 +76,7 @@
 {% else %}
 <p>No appointments to show</p>
 {% endif %}
-                <input type="submit" style="display:inline;position:absolute;left:100px;" id="save" class="btn  btn-primary float-right"  value="Save" />
+                <input type="submit" style="display:inline;position:absolute;left:100px;" id="save" class="btn  btn-primary float-right"  value="Save" disabled />
 
  </form>
              <input type="button" style="display:inline" id="edit" class="btn  btn-primary float-right" onclick="edit()" value="Edit" />
@@ -99,9 +99,11 @@
 <script language="JavaScript">
 function edit() {
 
-
-document.getElementById("uname").disabled = false;
+ 
+ document.getElementById("uname").disabled = false;
  document.getElementById("addr").disabled = false;
+ document.getElementById("save").disabled = false;
+
 }
 
 </script>

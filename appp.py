@@ -2,11 +2,16 @@ import os
 import time,calendar
 import json
 from pyrebase import pyrebase
-from flask import Flask, request, jsonify, render_template, redirect, url_for
+from datetime import timedelta
+from flask import Flask, request, jsonify, render_template, redirect, url_for,session, app
 
 from firebase_admin import credentials, firestore, initialize_app
 
 app = Flask(__name__)
+
+
+app.config['SECRET_KEY'] = 'optician_sitva'
+app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=1)
 
 config = {
 
@@ -172,7 +177,7 @@ def appointment():
 
 
             if (not doc_t):
-                return render_template("userDetails.html", user = userList)
+                return render_template("userDetails.html", user = userList,uid=doc_id)
 
             else:
                 return render_template("userDetails.html", us=res2, uid=doc_id,user = userList)
@@ -186,6 +191,9 @@ def editUser(uid):
         # if request.method == 'POST':
         addr = request.form['addr']
         name = request.form['uname']
+
+        
+        
         db.collection(u'user').document(uid).update({'name': name, 'address_google_map': addr})
 
         # return render_template("userDetails.html", us=res2, uid=doc_id, user=userList)
@@ -429,7 +437,7 @@ def view_app(uid,epoch):
 @app.route('/doctorDetails', methods=['GET', 'POST'])
 def dotor():
 
-    m = "User not found"
+    m = "Doctor not found"
     global doc_id
     if request.method == 'POST':
 
@@ -455,6 +463,8 @@ def dotor():
             userList = doc.to_dict()
             doc_id = doc.id
 
+        print(int(round(time.time() * 1000)))
+
         appoint_up = db.collection(u'appointment').where(u'doctor_id', u'==', doc_id).where(u'test_status', u'==',
                                                                                         '0').stream()
         appoint_pa = db.collection(u'appointment').where(u'doctor_id', u'==', doc_id).where(u'test_status', u'==',
@@ -467,6 +477,7 @@ def dotor():
         else:
 
             for doc in appoint_up:
+                
                 appointment = doc.to_dict()
                 doc_u.append(appointment)
             for doc in appoint_pa:
@@ -502,7 +513,7 @@ def dotor():
                 res_pa.append(stored_time)
 
             if not appointment:
-                return render_template("doctorDetails.html",user=userList)
+                return render_template("doctorDetails.html",user=userList,uid=doc_id)
 
             else:
             # print("total",total)
@@ -621,12 +632,6 @@ def appoint(uid):
         return f"An Error Occurred: {e}"
 
 
-
-
-
-
-
-
 @app.route('/pendingDoctor', methods=['GET'])
 def pending():
     query = db.collection('doctor').where(u'status', u'==', '0').stream()
@@ -644,6 +649,8 @@ def pending():
 def signin():
 
     global is_logged_in
+
+    session.permanent = True
 
     is_logged_in = False
 
@@ -692,7 +699,7 @@ def signin():
              return render_template('signinpage.html',msg=inv)
     else:
         if is_logged_in == True:
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('user'))
         else:
             return render_template('signinpage.html')
 
@@ -707,8 +714,15 @@ def read():
     except Exception as e:
         return f"An Error Occured: {e}"
 
+# @app.before_request
+# def make_session_permanent():
+#     print("before_request is running!")
+#     session.permanent = True
+#     app.permanent_session_lifetime = timedelta(seconds=5)
+
 port = int(os.environ.get('PORT', 8080))
 if __name__ == '__main__':
     app.run(threaded=True, host='0.0.0.0', port=port)
+    # app.run(debug=True)
 
 

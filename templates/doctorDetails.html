@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,7 +26,7 @@
             <li style="background-color: #EDF1FA"><a href="/doctor" style="color: #007AFE"><i class="fas fa-user-md" style="color: #007AFE"></i>Doctor</a></li>
             <!-- <li><a href="#"><i class="fas fa-question-circle"></i>Customer Support</a></li> -->
             <li><a href="/order"><i class="fas fa-store-alt"></i>Orders</a></li>            
-            <li><a href="/logout"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+            <li><a href="/logout" onclick="return confirm('Log out?')"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
 
         </ul>
 
@@ -66,11 +67,18 @@
          {% if up %}
 
 
+
                 {% for q in up %}
+                <script>
+                    var ts = Math.round((new Date()).getTime())
+                    
+                </script>
+                {% if q['epoch'] == ts %}
 
                 <a  href="/appointDetails/user={{uid}}/epoch={{q}}">{{q}}</a>
 
                              <br><br>
+                             {% endif %}
                 {% endfor %}
             {% else %}
                 <p><b>No Upcoming appointments </b></p>
@@ -85,6 +93,7 @@
 
 
                 {% for q in past %}
+                
 
                 <a  href="/appointDetails/user={{uid}}/epoch={{q}}">{{q}}</a>
 
@@ -93,7 +102,7 @@
             {% else %}
                 <p>No Past appointments </p>
                 {% endif %}
-                <input type="submit" style="display:inline;position:absolute;left:100px;" id="save" class="btn  btn-primary float-right"  value="Save" />
+                <input type="submit" style="display:inline;position:absolute;left:100px;" id="save" class="btn  btn-primary float-right"  value="Save" disabled />
 
  </form>
              <input type="button" style="display:inline" id="edit" class="btn  btn-primary float-right" onclick="edit()" value="Edit" />
@@ -123,6 +132,8 @@ function edit() {
 
   document.getElementById("uname").disabled = false;
     document.getElementById("addr").disabled = false;
+    document.getElementById("save").disabled = false;
+
 
 }
 

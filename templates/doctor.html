@@ -39,7 +39,7 @@
                             style="color: #007AFE"></i>Doctor</a></li>
                 <!-- <li><a href="/customer"><i class="fas fa-question-circle"></i>Customer Support</a></li> -->
                 <li><a href="/order"><i class="fas fa-store-alt"></i>Orders</a></li>
-                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                <li><a href="/logout" onclick="return confirm('Log out?')"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
 
 
             </ul>
@@ -47,6 +47,13 @@
 
         </div>
     </div>
+
+
+    {% if msg%}
+    <div class="alert alert-danger">
+    {{msg}}
+     </div>
+{% endif %}
 
 
     <div class="container-fluid pt-3">
